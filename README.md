@@ -1240,3 +1240,1026 @@ apiregistration.k8s.io/v1	APIService
 crd.projectcalico.org/v1	IPPool, BGPPeer
 resource.k8s.io/v1	ResourceClaim, DeviceClass
 
+
+Linux, Kubernetes, Kafka, ELK & Database Interview Notes
+
+⸻
+
+Linux
+
+Q1. What is the difference between awk and sed?
+
+Answer:
+
+sed
+
+Used for:
+
+* Search and replace
+* Simple text modifications
+* Stream editing
+
+awk
+
+Used for:
+
+* Processing structured data
+* Calculations
+* Parsing columns
+* Report generation
+
+Rule of Thumb
+
+* Use sed for straightforward text replacement.
+* Use awk when working with structured data and calculations.
+
+⸻
+
+Q2. How do you check connectivity between two servers if ping is disabled?
+
+Answer:
+
+If ICMP (ping) is disabled, use port-based connectivity tests.
+
+Telnet
+
+telnet 192.168.1.10 80
+
+Netcat
+
+nc -vz 192.168.1.10 80
+
+Other Tools
+
+* curl
+* nmap
+* wget
+
+⸻
+
+Q3. How do you configure a Cron Job for a different timezone?
+
+Answer:
+
+crontab -e
+
+Example:
+
+TZ="America/New_York" 0 2 * * * /path/to/script.sh
+TZ="Europe/London" 0 2 * * * /path/to/script.sh
+TZ="Asia/Tokyo" 0 2 * * * /path/to/script.sh
+
+⸻
+
+Q4. What is Heap Memory?
+
+Answer:
+
+Heap is the memory region used for dynamic memory allocation during program execution.
+
+Characteristics:
+
+* Allocated at runtime
+* Managed by malloc/new
+* Freed manually or by garbage collection
+
+⸻
+
+Q5. Common Linux Commands and Their Uses?
+
+Answer:
+
+File Operations
+
+ls
+cd
+cp
+mv
+rm
+mkdir
+cat
+
+Search & Text Processing
+
+grep
+find
+
+Permissions
+
+chmod
+chown
+
+Process Management
+
+ps
+htop
+kill
+
+Archiving
+
+tar
+gunzip
+
+Networking
+
+netstat
+telnet
+ssh
+scp
+wget
+
+System Monitoring
+
+df -h
+
+Scheduling
+
+crontab
+
+⸻
+
+Kubernetes
+
+Q6. How do you view logs from specific containers in a multi-container Pod?
+
+Answer:
+
+Container 1
+
+kubectl logs nginx-node-simple-pod -c nginx-container
+
+Container 2
+
+kubectl logs nginx-node-simple-pod -c node-container
+
+⸻
+
+Q7. How do you upgrade a Kubernetes Cluster?
+
+Answer:
+
+Step 1: Backup
+
+* etcd snapshot
+* Deployments
+* Services
+* ConfigMaps
+* Secrets
+
+Step 2: Upgrade Control Plane
+
+* Upgrade kubeadm
+* Upgrade kubelet
+* Upgrade kubectl
+
+Step 3: Upgrade Worker Nodes
+
+Drain node:
+
+kubectl drain <node-name>
+
+Upgrade packages.
+
+Uncordon node:
+
+kubectl uncordon <node-name>
+
+⸻
+
+Q8. How do you maximize Kubernetes Cluster Availability?
+
+Answer:
+
+Highly Available Control Plane
+
+* Minimum 3 control plane nodes
+* Multiple availability zones
+* Load balancer in front of API servers
+
+Worker Nodes
+
+* Multiple worker nodes
+* Multi-AZ deployment
+
+Pod Anti-Affinity
+
+podAntiAffinity:
+  requiredDuringSchedulingIgnoredDuringExecution:
+
+Pod Disruption Budget
+
+spec:
+  minAvailable: 80%
+
+Replicas and Autoscaling
+
+kubectl autoscale deployment my-app \
+  --cpu-percent=50 \
+  --min=2 \
+  --max=10
+
+Highly Available Ingress Controller
+
+Use multiple replicas.
+
+HA Storage
+
+* Replicated Persistent Volumes
+* Multi-AZ storage
+
+Resource Requests & Limits
+
+Define CPU and Memory requests/limits.
+
+Deployment Strategies
+
+* Rolling Updates
+* Canary Deployments
+
+Backup
+
+* etcd
+* PVs
+* Configurations
+
+⸻
+
+Q9. Why do we use StatefulSets?
+
+Answer:
+
+StatefulSets are used for stateful applications.
+
+Examples:
+
+* MySQL
+* PostgreSQL
+* Cassandra
+* Kafka
+* RabbitMQ
+
+Benefits
+
+Stable Identity
+
+pod-0
+pod-1
+pod-2
+
+Persistent Storage
+
+Each pod gets its own Persistent Volume.
+
+Ordered Deployment
+
+Pods are created sequentially.
+
+Stable DNS
+
+Each pod receives a stable hostname.
+
+⸻
+
+Q10. Which Service Does a StatefulSet Use?
+
+Answer:
+
+StatefulSets use a Headless Service.
+
+Purpose:
+
+* Stable network identities
+* Stable DNS records
+
+⸻
+
+Q11. How do you check Kubernetes Resources?
+
+Answer:
+
+Nodes
+
+kubectl get nodes
+kubectl describe node <node-name>
+kubectl top nodes
+
+Pods
+
+kubectl get pods
+kubectl get pods -n <namespace>
+kubectl describe pod <pod-name>
+kubectl top pod <pod-name>
+
+Deployments
+
+kubectl get deployments
+kubectl describe deployment <deployment-name>
+kubectl rollout status deployment <deployment-name>
+
+Services
+
+kubectl get services
+kubectl describe service <service-name>
+
+StatefulSets
+
+kubectl get statefulsets
+kubectl describe statefulset <statefulset-name>
+
+Storage
+
+kubectl get pv
+kubectl get pvc
+kubectl describe pvc <pvc-name>
+
+Logs
+
+kubectl logs <pod-name>
+kubectl logs <pod-name> -c <container-name>
+
+Quotas
+
+kubectl get resourcequotas
+kubectl describe resourcequota <quota-name>
+
+⸻
+
+Q12. How do you check which Service is using which Port?
+
+Answer:
+
+kubectl get services
+kubectl describe service <service-name>
+kubectl get services --all-namespaces
+
+⸻
+
+Q13. What are the default Kubernetes Namespaces?
+
+Answer:
+
+default
+kube-system
+kube-public
+kube-node-lease
+
+Example:
+
+kubectl get svc -n default
+
+⸻
+
+Q14. Difference Between ReplicaSet and Replication Controller?
+
+Answer:
+
+Both maintain the desired number of Pods.
+
+ReplicaSet
+
+* apps/v1
+* Supports set-based selectors
+* Current standard
+
+Replication Controller
+
+* v1 API
+* Equality-based selectors only
+* Deprecated
+
+⸻
+
+AWS
+
+Q15. What checks should be done before launching an EC2 Instance?
+
+Answer:
+
+Instance Type
+
+* General Purpose
+* Compute Optimized
+* Memory Optimized
+* Storage Optimized
+* GPU Instances
+
+AMI Selection
+
+* Latest AMI
+* Trusted source
+
+Security
+
+* Security Groups
+* Key Pair
+* IAM Role
+
+Networking
+
+* VPC
+* Subnets
+
+Storage
+
+* EBS sizing
+* Encryption
+
+Availability
+
+* Auto Scaling
+* Load Balancer
+
+Cost Optimization
+
+* Spot Instances
+* Reserved Instances
+* Right Sizing
+
+Protection
+
+* Termination Protection
+
+⸻
+
+Kafka & Keycloak
+
+Q16. What is Keycloak?
+
+Answer:
+
+Keycloak is an open-source Identity and Access Management (IAM) solution.
+
+Features:
+
+* Authentication
+* Authorization
+* SSO
+* OAuth2
+* OpenID Connect
+* SAML
+
+⸻
+
+Q17. What is Kafka?
+
+Answer:
+
+Kafka is a distributed event-streaming platform used for real-time data processing.
+
+Uses
+
+* Event-driven architectures
+* Log aggregation
+* Real-time analytics
+
+⸻
+
+Q18. What is ZooKeeper’s Role in Kafka?
+
+Answer:
+
+ZooKeeper:
+
+* Coordinates Kafka brokers
+* Maintains cluster metadata
+* Supports leader election
+* Ensures high availability
+
+⸻
+
+Q19. Producer-Consumer Problem in Kafka
+
+How do you ensure a producer’s request is consumed by a specific consumer?
+
+Answer:
+
+Use a unique message key.
+
+Producer
+
+Assign:
+
+user-id
+session-id
+
+as the message key.
+
+Consumer
+
+Consume from the partition associated with that key.
+
+⸻
+
+Monitoring & Observability
+
+Q20. How do you identify and collect Application Metrics?
+
+Answer:
+
+Types of Metrics
+
+Performance Metrics
+
+* Latency
+* Throughput
+* Error Rate
+
+Resource Metrics
+
+* CPU
+* Memory
+* Disk I/O
+
+User Metrics
+
+* Active Users
+* Session Duration
+
+Business Metrics
+
+* Transactions
+* Conversion Rate
+
+Common Tools
+
+* Prometheus
+* Grafana
+* ELK Stack
+* Datadog
+
+⸻
+
+Q21. How would you scale a Logging Platform with High Availability?
+
+Answer:
+
+Log Sharding
+
+Benefits:
+
+* Scalability
+* Better Performance
+* High Availability
+
+Log Rotation
+
+* Archive old logs
+* Delete expired logs
+
+⸻
+
+Q22. How do you optimize Application Performance using APM?
+
+Answer:
+
+Monitoring
+
+* Response Time
+* Throughput
+* Error Rate
+
+Profiling
+
+* Slow Methods
+* CPU Hotspots
+
+Database Optimization
+
+* Query Analysis
+* Indexing
+
+Caching
+
+* Redis
+* Memcached
+
+Load Balancing
+
+Distribute traffic evenly.
+
+Frontend Optimization
+
+* Compression
+* Image Optimization
+* CDN
+
+Testing
+
+* Load Testing
+* Stress Testing
+* A/B Testing
+
+⸻
+
+Q23. What do you check in Kibana APM when requests flow through Microservices?
+
+Answer:
+
+Service Maps
+
+Visualize service dependencies.
+
+Distributed Tracing
+
+Track request flow across services.
+
+Transaction Duration
+
+Identify slow services.
+
+Error Rates
+
+Identify failing services.
+
+HTTP Calls
+
+Analyze service-to-service communication.
+
+⸻
+
+Q24. How do you troubleshoot Login Issues across 20 Microservices using Kibana?
+
+Answer:
+
+Understand Login Flow
+
+Identify all services involved.
+
+Analyze Distributed Traces
+
+Track login requests.
+
+Check Transaction Duration
+
+Look for bottlenecks.
+
+Review Error Logs
+
+Identify failures.
+
+Review HTTP Requests
+
+Check service communication.
+
+⸻
+
+Q25. How do you identify request flow among 20 Microservices?
+
+Answer:
+
+Use:
+
+Distributed Tracing
+
+Provides end-to-end request visibility.
+
+Service Maps
+
+Visualizes communication between services.
+
+Transaction Analysis
+
+Shows slow or failing transactions.
+
+⸻
+
+Scheduling
+
+Q26. Explain Taints, Tolerations and Node Affinity.
+
+Taints
+
+Applied to nodes.
+
+Types:
+
+* NoSchedule
+* PreferNoSchedule
+* NoExecute
+
+Tolerations
+
+Applied to Pods.
+
+Allow pods to run on tainted nodes.
+
+Node Affinity
+
+Schedules Pods based on node labels.
+
+Required (Hard Rule)
+
+requiredDuringSchedulingIgnoredDuringExecution
+
+Preferred (Soft Rule)
+
+preferredDuringSchedulingIgnoredDuringExecution
+
+⸻
+
+Q27. Why use Taints/Tolerations when Node Affinity Exists?
+
+Answer:
+
+They solve different problems.
+
+Node Affinity
+
+Controls where Pods prefer or must run.
+
+Examples:
+
+* SSD nodes
+* GPU nodes
+* High-memory nodes
+
+Taints/Tolerations
+
+Control which Pods are allowed to run on nodes.
+
+They complement each other.
+
+⸻
+
+CoreDNS
+
+Q28. How do you troubleshoot CoreDNS overload?
+
+Answer:
+
+Check Logs
+
+kubectl logs -n kube-system -l k8s-app=kube-dns
+
+Monitor Metrics
+
+Use:
+
+* Prometheus
+* Metrics API
+
+Check Resources
+
+Review CPU and Memory utilization.
+
+Scale CoreDNS
+
+Increase replicas.
+
+⸻
+
+EFK / ELK
+
+Q29. Difference Between Fluent Bit and Logstash?
+
+Fluent Bit
+
+Answer:
+
+* Lightweight
+* High Performance
+* Low CPU Usage
+* Low Memory Usage
+* Single Binary
+
+Best for:
+
+* Log forwarding
+* Resource-constrained environments
+
+⸻
+
+Logstash
+
+Answer:
+
+* JVM-based
+* Higher resource usage
+* Rich processing features
+
+Best for:
+
+* Complex log transformations
+* Log enrichment
+
+⸻
+
+Q30. Which Ports Does Elasticsearch Use?
+
+Answer:
+
+Client Communication
+
+9200
+
+Node-to-Node Communication
+
+9300
+
+⸻
+
+Q31. How Does ELK/EFK Stack Work?
+
+Answer:
+
+Deployment Model
+
+* Fluentd → DaemonSet
+* Elasticsearch → StatefulSet
+* Kibana → Deployment
+
+Flow
+
+Application Logs
+        ↓
+Fluentd (24224)
+        ↓
+Elasticsearch (9200)
+        ↓
+Kibana (5601)
+
+Components
+
+Fluentd
+
+Collects logs.
+
+Elasticsearch
+
+Stores and indexes logs.
+
+Elasticsearch is a NoSQL database built on the Lucene Search Engine.
+
+Kibana
+
+Provides visualization and log analysis.
+
+⸻
+
+Kubernetes Control Plane
+
+Q32. What is kube-apiserver?
+
+Answer:
+
+The entry point to Kubernetes.
+
+Responsibilities:
+
+* Accept requests
+* Validate requests
+* Communicate with etcd
+
+Flow:
+
+kubectl → kube-apiserver → cluster
+
+If API Server stops, the cluster becomes inaccessible.
+
+⸻
+
+Q33. What is etcd?
+
+Answer:
+
+etcd is a distributed key-value database.
+
+Stores:
+
+* Pods
+* Services
+* ConfigMaps
+* Secrets
+* Desired State
+
+It is the source of truth for Kubernetes.
+
+⸻
+
+Q34. What is kube-scheduler?
+
+Answer:
+
+Responsible for assigning Pods to Nodes.
+
+Scheduling decisions are based on:
+
+* CPU
+* Memory
+* Affinity
+* Anti-Affinity
+* Taints
+* Tolerations
+
+⸻
+
+Q35. What is kube-controller-manager?
+
+Answer:
+
+Runs controllers that continuously ensure actual state matches desired state.
+
+Controllers Managed
+
+* Node Controller
+* ReplicaSet Controller
+* Deployment Controller
+* StatefulSet Controller
+* DaemonSet Controller
+* Job Controller
+* Endpoint Controller
+* Namespace Controller
+* Service Account Controller
+* PV/PVC Controller
+* Garbage Collector Controller
+* HPA Controller
+
+Provides:
+
+* Self-healing
+* Automation
+* Reconciliation
+
+⸻
+
+Q36. What is the Raft Consensus Algorithm?
+
+Answer:
+
+Raft is a leader-based consensus algorithm used by etcd.
+
+Responsibilities
+
+* Leader Election
+* Log Replication
+* Majority Quorum Agreement
+
+Benefits:
+
+* Consistency
+* Reliability
+* Fault Tolerance
+
+⸻
+
+Q37. What Happens When You Run kubectl apply?
+
+Answer:
+
+kubectl
+   ↓
+API Server
+   ↓
+etcd
+   ↓
+Controller Manager
+   ↓
+Scheduler
+   ↓
+Kubelet
+   ↓
+Container Runtime
+   ↓
+Kube-Proxy
+
+Flow
+
+1. kubectl sends request to API Server.
+2. API Server validates request.
+3. Desired state stored in etcd.
+4. Controllers reconcile state.
+5. Scheduler assigns node.
+6. Kubelet starts Pod.
+7. Container Runtime pulls image.
+8. Kube-Proxy configures networking.
+
+⸻
+
+SQL
+
+Q38. Types of SQL Joins?
+
+Answer:
+
+1. INNER JOIN
+2. LEFT JOIN
+3. RIGHT JOIN
+4. FULL JOIN
+5. CROSS JOIN
+6. SELF JOIN
+
+⸻
+
+Q39. Query to Find Employees Who Did Not Make Sales in October
+
+Answer:
+
+SELECT e.*
+FROM employees e
+LEFT JOIN sales s
+    ON e.employee_id = s.employee_id
+    AND MONTH(s.sale_date) = 10
+    AND YEAR(s.sale_date) = YEAR(CURDATE())
+WHERE s.sale_id IS NULL;
+
+⸻
