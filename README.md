@@ -815,5 +815,428 @@ Redis caches hot backend data such as:
 This protects databases and improves application performance.
 
 
+Kubernetes Architecture & API Groups Interview Notes
 
+⸻
+
+Worker Node Components
+
+Q1. What components run on every Kubernetes Worker Node?
+
+Answer:
+
+The following components run on every worker node and execute workloads:
+
+* kubelet
+* kube-proxy
+* Container Runtime
+* CNI Plugin
+* CoreDNS (cluster add-on)
+
+⸻
+
+Q2. What is kubelet?
+
+Answer:
+
+kubelet is the node agent that runs on every worker node.
+
+Responsibilities
+
+* Communicates with the API Server
+* Starts Pods and Containers
+* Monitors running workloads
+* Ensures containers run as defined in Pod specifications
+
+Key Point
+
+👉 kubelet actually runs the workloads.
+
+⸻
+
+Q3. What is kube-proxy?
+
+Answer:
+
+kube-proxy implements Service networking inside Kubernetes.
+
+Responsibilities
+
+* Routes traffic from Services to Pods
+* Maintains networking rules
+* Uses iptables or IPVS
+
+Key Point
+
+👉 kube-proxy handles internal load balancing inside the cluster.
+
+⸻
+
+Q4. What is a Container Runtime?
+
+Answer:
+
+A Container Runtime is responsible for running containers on a worker node.
+
+Examples
+
+* containerd
+* CRI-O
+* Docker (legacy)
+
+Responsibilities
+
+* Pull container images
+* Start containers
+* Stop containers
+* Manage container lifecycle
+
+⸻
+
+Q5. What is CNI (Container Network Interface)?
+
+Answer:
+
+CNI is responsible for Kubernetes pod networking.
+
+Examples
+
+* Calico
+* Flannel
+* Canal
+* Cilium
+
+Responsibilities
+
+* Assign Pod IP addresses
+* Enable Pod-to-Pod communication
+* Implement Network Policies
+
+⸻
+
+Q6. What is CoreDNS?
+
+Answer:
+
+CoreDNS is the DNS server used inside Kubernetes clusters.
+
+Responsibilities
+
+* DNS resolution
+* Service discovery
+
+Example
+
+A pod can access:
+
+mysql.default.svc.cluster.local
+
+instead of using IP addresses.
+
+⸻
+
+Kubernetes Workflow
+
+Q7. How does Kubernetes work internally when creating a Pod?
+
+Answer:
+
+User → kube-apiserver
+        ↓
+      etcd
+        ↓
+Scheduler → assigns pod to node
+        ↓
+kubelet → starts container
+        ↓
+CNI → provides networking
+        ↓
+kube-proxy → service routing
+        ↓
+CoreDNS → service name resolution
+
+Flow Explanation
+
+1. User sends a request to the API Server.
+2. API Server stores the desired state in etcd.
+3. Scheduler selects a suitable worker node.
+4. kubelet creates the Pod on the assigned node.
+5. CNI assigns networking.
+6. kube-proxy configures service routing.
+7. CoreDNS provides DNS-based service discovery.
+
+⸻
+
+Kubernetes API Groups
+
+Q8. What is apps/v1 API Group?
+
+Answer:
+
+The apps/v1 API group is used for workload controllers.
+
+Resources
+
+* Deployment
+* ReplicaSet
+* StatefulSet
+* DaemonSet
+* ControllerRevision
+
+Why Separate?
+
+Workload controllers evolved independently from core Kubernetes objects.
+
+⸻
+
+Q9. What is batch/v1 API Group?
+
+Answer:
+
+The batch/v1 API group is used for run-to-completion workloads.
+
+Resources
+
+* Job
+* CronJob
+
+Purpose
+
+Execute tasks that complete and exit.
+
+Examples:
+
+* Database backup jobs
+* Scheduled reports
+* Data processing tasks
+
+⸻
+
+Q10. What is autoscaling/v2 API Group?
+
+Answer:
+
+The autoscaling/v2 API group is used for autoscaling resources.
+
+Resources
+
+* HorizontalPodAutoscaler (HPA)
+
+Why Separate?
+
+Autoscaling evolved independently from core workload resources.
+
+⸻
+
+Q11. What is networking.k8s.io/v1 API Group?
+
+Answer:
+
+The networking.k8s.io/v1 API group manages networking resources.
+
+Resources
+
+* Ingress
+* NetworkPolicy
+* IngressClass
+* IPAddress
+* ServiceCIDR
+
+Why Separate?
+
+Networking features evolved independently from core APIs.
+
+⸻
+
+Q12. What is rbac.authorization.k8s.io/v1 API Group?
+
+Answer:
+
+The rbac.authorization.k8s.io/v1 API group manages Role-Based Access Control.
+
+Resources
+
+* Role
+* RoleBinding
+* ClusterRole
+* ClusterRoleBinding
+
+Purpose
+
+Control permissions and access within the cluster.
+
+⸻
+
+Q13. What is policy/v1 API Group?
+
+Answer:
+
+The policy/v1 API group contains policy-related resources.
+
+Resources
+
+* PodDisruptionBudget (PDB)
+
+Purpose
+
+Protect applications from excessive voluntary disruptions.
+
+⸻
+
+Q14. What is storage.k8s.io/v1 API Group?
+
+Answer:
+
+The storage.k8s.io/v1 API group manages storage resources.
+
+Resources
+
+* StorageClass
+* CSIDriver
+* VolumeAttachment
+* CSIStorageCapacity
+* VolumeAttributesClass
+
+Why Separate?
+
+Storage systems evolved independently and required dedicated APIs.
+
+⸻
+
+Q15. What is coordination.k8s.io/v1 API Group?
+
+Answer:
+
+The coordination.k8s.io/v1 API group is used for coordination and leader election.
+
+Resources
+
+* Lease
+
+Use Cases
+
+* kube-controller-manager leader election
+* Scheduler leader election
+* Controller leader election
+
+⸻
+
+Q16. What is admissionregistration.k8s.io/v1 API Group?
+
+Answer:
+
+The admissionregistration.k8s.io/v1 API group manages admission controllers and webhooks.
+
+Resources
+
+* MutatingWebhookConfiguration
+* ValidatingWebhookConfiguration
+* ValidatingAdmissionPolicy
+
+Purpose
+
+Intercept and validate requests before objects are created or modified.
+
+⸻
+
+Q17. What is apiextensions.k8s.io/v1 API Group?
+
+Answer:
+
+The apiextensions.k8s.io/v1 API group is used to extend Kubernetes.
+
+Resources
+
+* CustomResourceDefinition (CRD)
+
+Purpose
+
+Create custom resources beyond built-in Kubernetes objects.
+
+Example
+
+Database
+KafkaCluster
+RedisCluster
+
+Custom resources can be created through CRDs.
+
+⸻
+
+Q18. What is apiregistration.k8s.io/v1 API Group?
+
+Answer:
+
+The apiregistration.k8s.io/v1 API group is used to extend the Kubernetes API Server.
+
+Resources
+
+* APIService
+
+Purpose
+
+Register external APIs with the Kubernetes API Server.
+
+⸻
+
+Q19. What is crd.projectcalico.org/v1?
+
+Answer:
+
+This API group contains Calico-specific Custom Resource Definitions (CRDs).
+
+Resources
+
+* IPPool
+* BGPPeer
+* GlobalNetworkPolicy
+* FelixConfiguration
+
+Why Does It Exist?
+
+Calico registers its own CRDs to extend Kubernetes networking capabilities.
+
+⸻
+
+Q20. What is resource.k8s.io/v1 API Group?
+
+Answer:
+
+The resource.k8s.io/v1 API group supports Kubernetes Dynamic Resource Allocation.
+
+Resources
+
+* ResourceClaim
+* DeviceClass
+* ResourceSlice
+
+Purpose
+
+Manage specialized hardware and dynamic resources.
+
+Examples:
+
+* GPUs
+* FPGAs
+* AI Accelerators
+* Custom Hardware Devices
+
+⸻
+
+Quick Revision Table
+
+API Group	Common Resources
+apps/v1	Deployment, StatefulSet, DaemonSet
+batch/v1	Job, CronJob
+autoscaling/v2	HorizontalPodAutoscaler
+networking.k8s.io/v1	Ingress, NetworkPolicy
+rbac.authorization.k8s.io/v1	Role, ClusterRole
+policy/v1	PodDisruptionBudget
+storage.k8s.io/v1	StorageClass, CSIDriver
+coordination.k8s.io/v1	Lease
+admissionregistration.k8s.io/v1	MutatingWebhook, ValidatingWebhook
+apiextensions.k8s.io/v1	CustomResourceDefinition
+apiregistration.k8s.io/v1	APIService
+crd.projectcalico.org/v1	IPPool, BGPPeer
+resource.k8s.io/v1	ResourceClaim, DeviceClass
 
