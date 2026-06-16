@@ -3254,3 +3254,110 @@ Answer:
 
 <img width="1077" height="393" alt="Screenshot 2026-06-17 at 12 46 02 AM" src="https://github.com/user-attachments/assets/9a2cab6a-5e9b-4688-84b9-ee7510302c8d" />
 
+
+topologySpreadConstraints:
+- maxSkew: 1
+  topologyKey: kubernetes.io/hostname
+  whenUnsatisfiable: DoNotSchedule
+  labelSelector:
+    matchLabels:
+      app: nginx
+
+
+  
+
+Q1: What is maxSkew?
+
+Answer:
+
+It defines the maximum allowed difference in the number of matching Pods between topology domains.
+
+⸻
+
+Q2: What topologyKey values are commonly used?
+
+Answer:
+
+* kubernetes.io/hostname
+* topology.kubernetes.io/zone
+* topology.kubernetes.io/region
+
+⸻
+
+Q3: Difference between DoNotSchedule and ScheduleAnyway?
+
+Answer:
+
+* DoNotSchedule = Hard rule
+* ScheduleAnyway = Soft rule
+
+⸻
+
+Q4: Difference between Pod Anti-Affinity and Topology Spread?
+
+Answer:
+
+Pod Anti-Affinity focuses on separating Pods, whereas Topology Spread Constraints focus on maintaining an even distribution of Pods across topology domains.
+
+⸻
+
+🔹 Node Selector
+
+* Simplest way to schedule a Pod on specific nodes using node labels.
+* Supports only exact label matching (key=value) and is always a hard rule.
+
+⸻
+
+🔹 Node Affinity
+
+* Controls which nodes a Pod can run on based on node labels.
+* Supports hard rules (requiredDuringSchedulingIgnoredDuringExecution) and soft rules (preferredDuringSchedulingIgnoredDuringExecution).
+
+⸻
+
+🔹 Pod Affinity
+
+* Schedules a Pod close to other Pods with specific labels (same node/zone).
+* Used when applications need low latency communication between related services.
+
+⸻
+
+🔹 Pod Anti-Affinity
+
+* Prevents Pods with matching labels from running on the same node or topology domain.
+* Commonly used for High Availability (HA) and fault tolerance.
+
+⸻
+
+🔹 Taints & Tolerations
+
+* Taints are applied on nodes to repel Pods; Tolerations allow Pods to run on those tainted nodes.
+* Used for dedicated workloads like databases, GPUs, or control-plane nodes.
+
+⸻
+
+🔹 Topology Spread Constraints
+
+* Ensures Pods are distributed evenly across nodes, zones, or regions.
+* Helps prevent uneven Pod placement and improves availability during node/AZ failures.
+
+Node Selector      → Node Labels
+Node Affinity      → Node Labels
+
+Pod Affinity       → Pod Labels
+Pod Anti-Affinity  → Pod Labels
+
+Taints/Tolerations → Taints (not labels)
+
+Topology Spread    → Node Topology Labels
+
+podAntiAffinity:
+  requiredDuringSchedulingIgnoredDuringExecution:
+  - labelSelector:
+      matchLabels:
+        app: nginx
+    topologyKey: kubernetes.io/hostname
+
+
+topologyKey is used in Pod Affinity, Pod Anti-Affinity, and Topology Spread Constraints to define the topology domain (node, zone, or region) where Pods should be co-located, separated, or evenly distributed. It is not used in Node Selector, Node Affinity, or Taints and Tolerations.
+
