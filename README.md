@@ -3342,9 +3342,11 @@ Pod Anti-Affinity focuses on separating Pods, whereas Topology Spread Constraint
 * Helps prevent uneven Pod placement and improves availability during node/AZ failures.
 
 Node Selector      → Node Labels
+
 Node Affinity      → Node Labels
 
 Pod Affinity       → Pod Labels
+
 Pod Anti-Affinity  → Pod Labels
 
 Taints/Tolerations → Taints (not labels)
