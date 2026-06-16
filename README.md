@@ -2262,4 +2262,992 @@ LEFT JOIN sales s
     AND YEAR(s.sale_date) = YEAR(CURDATE())
 WHERE s.sale_id IS NULL;
 
+
 ⸻
+Additional DevOps / SRE Interview Notes (Unique Questions Only)
+
+⸻
+
+AWS
+
+Q1. What is the difference between an AMI and a Snapshot?
+
+Answer:
+
+AMI (Amazon Machine Image)
+
+Used to launch EC2 instances.
+
+Contains:
+
+* Operating System
+* Application Software
+* Configuration
+* EBS Snapshot references
+
+Snapshot
+
+Backup of an EBS Volume.
+
+Used for:
+
+* Backup
+* Disaster Recovery
+* Volume Restoration
+
+Summary
+
+AMI	Snapshot
+Launch EC2 Instances	Backup EBS Volumes
+Contains OS + Configuration	Contains only Volume Data
+Used for Scaling	Used for Recovery
+
+⸻
+
+Q2. What is AWS CloudTrail?
+
+Answer:
+
+CloudTrail records AWS API activity across your AWS account.
+
+Use Cases
+
+* Auditing
+* Compliance
+* Security Monitoring
+* Troubleshooting
+
+Example Events
+
+* EC2 Instance Creation
+* IAM User Changes
+* S3 Bucket Modifications
+* Security Group Changes
+
+⸻
+
+Q3. Can One Elastic IP Be Attached to Multiple EC2 Instances?
+
+Answer:
+
+No.
+
+An Elastic IP can be associated with only one EC2 instance (or network interface) at a time.
+
+However, it can be moved between instances when needed.
+
+⸻
+
+Q4. Why Do We Need ALB and NLB When CLB Already Exists?
+
+Answer:
+
+Classic Load Balancer (CLB) is an older generation load balancer with limited functionality.
+
+Application Load Balancer (ALB)
+
+Layer 7
+
+Supports:
+
+* Host-based routing
+* Path-based routing
+* WebSocket
+* Microservices
+* Container workloads
+
+Network Load Balancer (NLB)
+
+Layer 4
+
+Supports:
+
+* TCP
+* UDP
+* TLS
+
+Provides:
+
+* Ultra-low latency
+* Millions of requests per second
+* Static IP support
+
+Gateway Load Balancer (GWLB)
+
+Layer 3
+
+Used for:
+
+* Firewalls
+* IDS/IPS
+* Security Appliances
+
+⸻
+
+Q5. What Load Balancing Algorithms Are Used?
+
+Answer:
+
+Common algorithms:
+
+* Round Robin
+* Least Connections
+* Weighted Round Robin
+* Source IP Hash
+
+AWS internally uses optimized routing mechanisms depending on load balancer type.
+
+⸻
+
+Q6. What is Connection Draining?
+
+Answer:
+
+Connection Draining allows existing connections to complete before terminating an instance.
+
+Use Case
+
+During:
+
+* Instance Termination
+* Deployment
+* Scale Down
+
+Users are not disconnected abruptly.
+
+⸻
+
+Q7. What is the Difference Between Desired, Minimum and Maximum Capacity in Auto Scaling?
+
+Answer:
+
+Desired Capacity
+
+Number of instances Auto Scaling attempts to maintain.
+
+Minimum Capacity
+
+Lowest number of instances allowed.
+
+Maximum Capacity
+
+Highest number of instances allowed.
+
+Example
+
+Minimum = 2
+Desired = 4
+Maximum = 10
+
+Auto Scaling:
+
+* Maintains 4 instances normally
+* Never goes below 2
+* Never exceeds 10
+
+⸻
+
+Q8. What is an Alias Record in Route 53?
+
+Answer:
+
+Alias records allow Route 53 to point directly to AWS resources.
+
+Supported Targets
+
+* ALB
+* NLB
+* CloudFront
+* S3 Website
+* API Gateway
+
+Benefits
+
+* No extra DNS query charges
+* Automatically handles IP changes
+
+⸻
+
+Q9. What are Availability Zones, Availability Sets and Fault Domains?
+
+Answer:
+
+Availability Zone (AWS)
+
+Physically separate datacenter within a region.
+
+Example:
+
+ap-south-1a
+ap-south-1b
+ap-south-1c
+
+Availability Set (Azure)
+
+Logical grouping of VMs.
+
+Fault Domain
+
+Group of hardware sharing power/network resources.
+
+Used to prevent single hardware failure from impacting all VMs.
+
+⸻
+
+Q10. What are On-Demand, Reserved and Spot Instances?
+
+On-Demand
+
+* Pay as you go
+* No commitment
+
+Reserved Instances
+
+* Long-term commitment
+* Lower cost
+
+Spot Instances
+
+* Unused AWS capacity
+* Lowest cost
+* Can be terminated anytime
+
+⸻
+
+Q11. What is a VPC Endpoint?
+
+Answer:
+
+A VPC Endpoint allows private communication with AWS services without traversing the public internet.
+
+Benefits
+
+* Improved Security
+* Lower Latency
+* No NAT Gateway Required
+
+Examples
+
+* S3
+* DynamoDB
+* Secrets Manager
+* SSM
+
+⸻
+
+Q12. What is a Signed URL in CloudFront?
+
+Answer:
+
+A Signed URL provides temporary access to private content.
+
+Features
+
+* Expiration Time
+* Restricted Access
+* Secure Content Delivery
+
+Commonly used for:
+
+* Paid Videos
+* Private Downloads
+* Premium Content
+
+⸻
+
+Q13. What is a Pre-Signed URL?
+
+Answer:
+
+A Pre-Signed URL provides temporary access to S3 objects.
+
+Common Serverless Flow
+
+User
+ ↓
+Lambda
+ ↓
+Generate Pre-Signed URL
+ ↓
+User Uploads Directly to S3
+
+Benefits:
+
+* Reduced Backend Load
+* Secure Uploads
+* Temporary Access
+
+⸻
+
+Q14. How Would You Design an AMI-Based Auto Scaling Deployment with Rollback?
+
+Answer:
+
+Deployment Flow
+
+1. Create Golden AMI.
+2. Update Launch Template with new AMI.
+3. Create a new ASG version.
+4. Perform Rolling or Canary Deployment.
+5. Monitor:
+    * CloudWatch Metrics
+    * Health Checks
+    * Application Logs
+6. If failure occurs:
+    * Roll back Launch Template version.
+    * Restore previous AMI.
+    * Trigger Auto Scaling refresh.
+
+Best Practice
+
+Use:
+
+* Launch Templates
+* Auto Scaling Instance Refresh
+* Blue/Green Deployment
+
+⸻
+
+Linux
+
+Q15. How Do You Check CPU Architecture in Linux?
+
+Answer:
+
+arch
+
+or
+
+lscpu
+
+⸻
+
+Q16. What is an Inode?
+
+Answer:
+
+An inode (Index Node) is a data structure that stores metadata about a file.
+
+Contains:
+
+* Owner
+* Permissions
+* File Size
+* Timestamps
+* Block Locations
+
+Does NOT contain:
+
+* File Name
+
+Check Inode Number
+
+ls -i filename
+
+⸻
+
+Q17. How Do You Check Whether a Command Executed Successfully?
+
+Answer:
+
+Check exit code:
+
+echo $?
+
+Exit Status
+
+0   = Success
+!=0 = Failure
+
+⸻
+
+Q18. How Do You Remove Empty Lines from a File?
+
+Answer:
+
+sed '/^$/d' filename
+
+⸻
+
+Q19. What is NAT in Linux?
+
+Answer:
+
+NAT (Network Address Translation) modifies source or destination IP addresses in packets.
+
+Benefits
+
+* IP Conservation
+* Security
+* Internet Access for Private Networks
+
+⸻
+
+Q20. Difference Between Hard Link and Soft Link?
+
+Answer:
+
+Hard Link
+
+* Shares same inode
+* Cannot span filesystems
+* Survives original file deletion
+
+Soft Link
+
+* Points to file path
+* Can span filesystems
+* Breaks if original file is deleted
+
+⸻
+
+Q21. How Do You Troubleshoot 100% Disk Utilization?
+
+Answer:
+
+Check Filesystem Usage
+
+df -h
+
+Find Large Directories
+
+du -h --max-depth=1 /
+
+Check Logs
+
+/var/log
+
+Check Open Deleted Files
+
+lsof | grep deleted
+
+⸻
+
+Terraform
+
+Q22. How Do You Import a Manually Created Resource into Terraform State?
+
+Answer:
+
+Use:
+
+terraform import
+
+Example:
+
+terraform import aws_instance.web i-1234567890abcdef
+
+This updates the Terraform state without recreating the resource.
+
+⸻
+
+Q23. What is a Null Resource in Terraform?
+
+Answer:
+
+A Null Resource does not create infrastructure.
+
+Used for:
+
+* Scripts
+* Provisioners
+* Custom automation
+
+Example:
+
+resource "null_resource" "example" {
+  provisioner "local-exec" {
+    command = "echo Hello"
+  }
+}
+
+⸻
+
+Jenkins
+
+Q24. What is a Shared Library in Jenkins?
+
+Answer:
+
+Shared Libraries allow reusable pipeline code across multiple Jenkins pipelines.
+
+Benefits
+
+* Reusability
+* Standardization
+* Reduced Duplication
+
+⸻
+
+Q25. What is an Agent in Jenkins?
+
+Answer:
+
+An Agent is a worker machine where builds execute.
+
+Benefits:
+
+* Parallel Builds
+* Distributed Workloads
+* Better Resource Utilization
+
+⸻
+
+Q26. What is an Agent in Declarative Pipeline?
+
+Answer:
+
+The agent directive specifies where the pipeline executes.
+
+Examples:
+
+agent any
+agent {
+    label 'linux'
+}
+agent {
+    docker {
+        image 'maven:3.9'
+    }
+}
+
+⸻
+
+Q27. What is a Jenkinsfile?
+
+Answer:
+
+A Jenkinsfile defines Pipeline-as-Code.
+
+Characteristics:
+
+* Stored in Git Repository
+* Version Controlled
+* Automates CI/CD workflows
+
+⸻
+
+Q28. What is a Multibranch Pipeline?
+
+Answer:
+
+A Jenkins pipeline that automatically discovers branches containing a Jenkinsfile.
+
+Benefits:
+
+* One pipeline for multiple branches
+* Automatic branch discovery
+* Simplified CI/CD management
+
+⸻
+
+Q29. What Are Commonly Used Jenkins Environment Variables?
+
+Answer:
+
+BUILD_ID
+BUILD_NUMBER
+BUILD_URL
+JOB_NAME
+JOB_BASE_NAME
+WORKSPACE
+JENKINS_URL
+
+⸻
+
+Q30. How Do You Install a Custom Jenkins Plugin?
+
+Answer:
+
+1. Download .hpi file.
+2. Go to:
+
+Manage Jenkins
+ → Plugins
+ → Advanced
+
+3. Upload HPI file.
+4. Restart Jenkins.
+
+⸻
+
+Git
+
+Q31. What is a Pull Request (PR)?
+
+Answer:
+
+A Pull Request is a request to merge code from one branch into another after code review.
+
+Benefits
+
+* Code Review
+* Collaboration
+* Quality Control
+
+⸻
+
+Q32. What is SHA in Git?
+
+Answer:
+
+SHA (Secure Hash Algorithm) uniquely identifies Git objects.
+
+Example:
+
+f7c3bc1d808e04732adf679965ccc34ca7ae3441
+
+Used for:
+
+* Commits
+* Trees
+* Blobs
+* Tags
+
+⸻
+
+Docker
+
+Q33. What is the Docker Lifecycle?
+
+Answer:
+
+Dockerfile
+      ↓
+Docker Image
+      ↓
+Docker Container
+      ↓
+Push to Registry
+(ECR/Docker Hub/GCR)
+
+⸻
+
+Q34. What are Docker Components?
+
+Answer:
+
+Docker Client
+
+CLI used by users.
+
+Docker Daemon
+
+Manages images and containers.
+
+Docker Registry
+
+Stores images.
+
+Docker Images
+
+Templates for containers.
+
+Docker Compose
+
+Manages multi-container applications.
+
+⸻
+
+Q35. What is a Distroless Image?
+
+Answer:
+
+A Distroless Image contains:
+
+* Application
+* Runtime Dependencies
+
+But excludes:
+
+* Package Managers
+* Shells
+* OS Utilities
+
+Benefits:
+
+* Smaller Images
+* Better Security
+* Reduced Attack Surface
+
+⸻
+
+Q36. Types of Docker Storage Mounts?
+
+Answer:
+
+Volumes
+
+Managed by Docker.
+
+Bind Mounts
+
+Maps host directories.
+
+tmpfs Mounts
+
+Stored in memory (RAM).
+
+⸻
+
+Q37. Types of Docker Restart Policies?
+
+Answer:
+
+no
+
+Never restart.
+
+always
+
+Always restart.
+
+unless-stopped
+
+Restart unless manually stopped.
+
+on-failure
+
+Restart only on failures.
+
+⸻
+
+Kubernetes
+
+Q38. Why Should We Avoid the Default Namespace?
+
+Answer:
+
+Reasons:
+
+* Better Organization
+* Improved Security
+* Environment Isolation
+* Easier RBAC Management
+* Clear Resource Separation
+
+⸻
+
+Q39. How Do Two Containers in the Same Pod Communicate?
+
+Answer:
+
+Containers inside a Pod:
+
+* Share Network Namespace
+* Share Same IP Address
+
+Communication occurs through:
+
+localhost
+127.0.0.1
+
+⸻
+
+Q40. What is an Init Container?
+
+Answer:
+
+Init Containers run before application containers start.
+
+Use Cases
+
+* Download configuration
+* Database initialization
+* Dependency checks
+* Setup scripts
+
+Application containers start only after all Init Containers complete successfully.
+
+⸻
+
+Elasticsearch
+
+Q41. What are Shards and Replicas?
+
+Answer:
+
+Shard
+
+Partition of an index.
+
+Used for:
+
+* Scalability
+* Parallel Processing
+
+Replica
+
+Copy of a Primary Shard.
+
+Used for:
+
+* High Availability
+* Faster Searches
+
+⸻
+
+Q42. What is Query DSL?
+
+Answer:
+
+Query DSL (Domain Specific Language) is Elasticsearch’s JSON-based query language.
+
+Used for:
+
+* Search
+* Filtering
+* Aggregation
+* Analytics
+
+⸻
+
+Q43. What are Traces in Kibana APM?
+
+Answer:
+
+Traces provide end-to-end visibility of requests across distributed systems.
+
+They help identify:
+
+* Latency
+* Bottlenecks
+* Failures
+* Service Dependencies
+
+⸻
+
+Q44. What is APM in Kibana?
+
+Answer:
+
+Application Performance Monitoring (APM) provides:
+
+* Transaction Monitoring
+* Distributed Tracing
+* Service Maps
+* Error Tracking
+* Performance Metrics
+* Real User Monitoring (RUM)
+
+Used to troubleshoot and optimize application performance.
+
+
+
+
+Jenkins Performance Optimization Interview Notes
+
+Q1. How can you optimize Jenkins performance?
+
+Answer:
+
+Jenkins performance can be improved by:
+
+* Increasing executors
+* Using distributed builds (agents)
+* Allocating sufficient JVM memory
+* Optimizing garbage collection
+* Cleaning up old builds regularly
+
+⸻
+
+Q2. How do you increase Jenkins build concurrency?
+
+Answer:
+
+Increase the number of executors so Jenkins can run more jobs in parallel.
+
+Path:
+
+Manage Jenkins
+→ Configure System
+→ # of Executors
+
+Note: Set executors according to available CPU and memory resources.
+
+⸻
+
+Q3. What are Distributed Builds in Jenkins?
+
+Answer:
+
+Distributed builds use multiple Jenkins agents (nodes) to execute jobs instead of running everything on the Jenkins controller.
+
+Benefits
+
+* Better scalability
+* Faster build execution
+* Reduced load on controller
+
+Path:
+
+Manage Jenkins
+→ Manage Nodes and Clouds
+→ New Node
+
+⸻
+
+Q4. How do you allocate more memory to Jenkins?
+
+Answer:
+
+Increase JVM heap size using JAVA_OPTS.
+
+Example:
+
+JAVA_OPTS="-Xms2g -Xmx4g"
+
+Parameters
+
+* -Xms2g → Initial heap size = 2 GB
+* -Xmx4g → Maximum heap size = 4 GB
+
+⸻
+
+Q5. How do you optimize Garbage Collection (GC) in Jenkins?
+
+Answer:
+
+Use the G1 Garbage Collector for better memory management and lower pause times.
+
+Example:
+
+JAVA_OPTS="-XX:+UseG1GC -XX:MaxGCPauseMillis=200"
+
+Benefits
+
+* Reduced GC pauses
+* Better performance under heavy workloads
+* Improved memory utilization
+
+⸻
+
+Q6. Why should old Jenkins builds be cleaned up?
+
+Answer:
+
+Old builds consume disk space and can impact Jenkins performance.
+
+Benefits of Cleanup
+
+* Frees disk space
+* Improves Jenkins responsiveness
+* Reduces storage costs
+
+Path:
+
+Job Configuration
+→ Discard Old Builds
+
+⸻
+
+Q7. What are the most common Jenkins performance tuning steps?
+
+Answer:
+
+1. Increase executor count.
+2. Use distributed builds (agents).
+3. Allocate sufficient JVM heap memory.
+4. Use G1 Garbage Collector.
+5. Clean up old builds and artifacts.
+6. Monitor CPU, memory, and disk usage regularly.
