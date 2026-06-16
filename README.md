@@ -3251,3 +3251,6 @@ Answer:
 4. Use G1 Garbage Collector.
 5. Clean up old builds and artifacts.
 6. Monitor CPU, memory, and disk usage regularly.
+
+<img width="1077" height="393" alt="Screenshot 2026-06-17 at 12 46 02 AM" src="https://github.com/user-attachments/assets/9a2cab6a-5e9b-4688-84b9-ee7510302c8d" />
+
