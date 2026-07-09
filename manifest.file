@@ -19,7 +19,6 @@ ARG JAR_FILE
 # Copy Application Jar
 COPY ${JAR_FILE} /app/app.jar
 
-
 # Copy Startup Script
 COPY entrypoint.sh /entrypoint.sh
 
@@ -33,9 +32,7 @@ USER appuser
 # Application Port
 EXPOSE 8080
 
-# Health Check
-HEALTHCHECK --interval=30s --timeout=5s --start-period=30s --retries=3 \
-CMD wget --spider -q http://localhost:8080/actuator/health || exit 1
-
 # Start Application
 ENTRYPOINT ["/entrypoint.sh"]
+
+
