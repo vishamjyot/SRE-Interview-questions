@@ -1,0 +1,41 @@
+Dockerfile?
+
+# Base Runtime Image
+FROM 172.23.12.160:8083/openjdk:11-jdk-alpine
+
+# Create non-root user
+RUN addgroup -S appgroup && \
+    adduser -S appuser -G appgroup
+
+# Application Directory
+WORKDIR /app
+
+# Temporary volume for Spring Boot
+VOLUME /tmp
+
+# Build Argument
+ARG JAR_FILE
+
+# Copy Application Jar
+COPY ${JAR_FILE} /app/app.jar
+
+
+# Copy Startup Script
+COPY entrypoint.sh /entrypoint.sh
+
+# Set Permissions
+RUN chmod 500 /entrypoint.sh && \
+    chown -R appuser:appgroup /app /opt/agents /entrypoint.sh
+
+# Switch to Non-Root User
+USER appuser
+
+# Application Port
+EXPOSE 8080
+
+# Health Check
+HEALTHCHECK --interval=30s --timeout=5s --start-period=30s --retries=3 \
+CMD wget --spider -q http://localhost:8080/actuator/health || exit 1
+
+# Start Application
+ENTRYPOINT ["/entrypoint.sh"]
