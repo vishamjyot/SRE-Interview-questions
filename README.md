@@ -10,6 +10,29 @@ Answer:
 
 An SLI is a measurement or metric that tells you how your service is performing.
 
+SLI = (Total Requests - Failed Requests) / Total Requests × 100
+
+Error Rate = 1 − SLI
+Error Budget = 1 − SLO
+
+p50, p95, and p99 are percentile latency metrics. They tell you how fast requests are for different portions of your traffic.
+
+---------------------------------------------------------
+
+p50 (50th percentile)
+
+50% of requests are faster than this value
+50% are slower
+
+p50 = 30 ms
+This means the “typical” request completes in about 30 ms.
+
+----------------------------------------------------------
+p95 (95th percentile)
+95% of requests are faster than this value
+5% are slower
+
+
 ⸻
 
 Q2. What is an SLO (Service Level Objective)?
@@ -39,7 +62,38 @@ Answer:
 
 An SLA is a formal contract with customers that includes consequences (usually financial) if the SLO is not met.
 
-⸻
+What is Burn Rate?
+
+Burn rate tells you how quickly you’re consuming your error budget.
+
+Burn Rate = Actual error rate ÷ Allowed error rate
+
+<img width="591" height="644" alt="Screenshot 2026-08-09 at 12 14 32 AM" src="https://github.com/user-attachments/assets/c4c27023-1b95-4a50-8c48-52c0e2319ddc" />
+
+------------------------------------
+SLO = 99.9%
+
+Allowed error rate = 0.1%
+
+Actual error rate = 0.5%
+
+Burn Rate = 0.5% / 0.1%
+          = 5x
+
+You are burning your error budget at 5× the sustainable rate.
+--------------------------------------
+
+What does POC mean?
+
+“Can this idea actually work?”
+
+POC
+ ↓
+Does it work?
+ ↓
+Pilot
+
+------------------------------------------
 
 Q4. What is a cgroup in Linux?
 
