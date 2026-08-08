@@ -3425,42 +3425,10 @@ If we are using 3 Master node for the highly available k8s cluster then in that 
 
 How traffic is flowing in my application that's on running on-prem?
 
-                         INTERNET
-                            │
-                            ▼
-                  ┌─────────────────┐
-                  │  Imperva / WAF  │
-                  │ DDoS + Security │
-                  └────────┬────────┘
-                           │
-                           ▼
-                  ┌─────────────────┐
-                  │   API Gateway   │
-                  │ Auth / RateLimit│
-                  │ API Routing     │
-                  └────────┬────────┘
-                           │
-                           ▼
-             ┌──────────────────────────┐
-             │  External Load Balancer  │
-             └────────────┬─────────────┘
-                          │
-══════════════════════════╪════════════════════════════
-        KUBERNETES CLUSTER│
-                          ▼
-              ┌──────────────────────┐
-              │  Ingress Controller  │
-              │  Ingress-1           │
-              │  Ingress-2           │
-              │  Ingress-3           │
-              └──────────┬───────────┘
-                         │
-                         ▼
-                  ┌─────────────┐
-                  │ K8s Service │
-                  │  ClusterIP  │
-                  └──────┬──────┘
-                         │
-               ┌─────────┼─────────┐
-               ▼         ▼         ▼
-             Pod-A     Pod-B     Pod-C
+<img width="591" height="569" alt="Screenshot 2026-08-09 at 1 26 33 AM" src="https://github.com/user-attachments/assets/330da16f-95e3-41fd-a3b8-b16783c6074b" />
+
+How traffic is flowing in my application that's running on AWS?
+
+<img width="406" height="702" alt="Screenshot 2026-08-09 at 1 36 12 AM" src="https://github.com/user-attachments/assets/fb4ba1da-0cbe-403c-b254-a4b6997444c5" />
+
+
