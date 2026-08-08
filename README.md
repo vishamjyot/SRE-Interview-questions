@@ -3433,4 +3433,10 @@ How traffic is flowing in my application that's running on AWS?
 
 <img width="406" height="702" alt="Screenshot 2026-08-09 at 1 36 12 AM" src="https://github.com/user-attachments/assets/fb4ba1da-0cbe-403c-b254-a4b6997444c5" />
 
+ what's eviction policies in k8s?
+
+ Kubernetes Quality of Service (QoS) classes are categories that Kubernetes automatically assigns to Pods to determine their scheduling priority and the order in which they are evicted when a node runs out of resources. You cannot set the QoS class directly; instead, Kubernetes infers it based on how you configure CPU and memory requests and limits in your Pod specification
+
+ <img width="1049" height="423" alt="Screenshot 2026-08-09 at 3 07 05 AM" src="https://github.com/user-attachments/assets/239c1799-ba32-44fc-a2ec-766992555488" />
+
 
