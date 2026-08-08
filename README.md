@@ -3425,6 +3425,8 @@ If we are using 3 Master node for the highly available k8s cluster then in that 
 
 How traffic is flowing in my application that's on running on-prem?
 
+“A client request first reaches our perimeter security layer, where we have firewall/WAF protection such as Imperva or Palo Alto. After security inspection, traffic is forwarded to the API Gateway, which handles concerns such as authentication, authorization, rate limiting and API routing. The gateway forwards the request to the Kubernetes ingress/load-balancing layer. The Ingress Controller evaluates the host/path and routes the request to the appropriate Kubernetes Service. The Service then load-balances the request across healthy application Pods.”
+
 <img width="591" height="569" alt="Screenshot 2026-08-09 at 1 26 33 AM" src="https://github.com/user-attachments/assets/330da16f-95e3-41fd-a3b8-b16783c6074b" />
 
 How traffic is flowing in my application that's running on AWS?
