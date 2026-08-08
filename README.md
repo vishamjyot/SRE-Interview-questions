@@ -3417,3 +3417,9 @@ podAntiAffinity:
 
 topologyKey is used in Pod Affinity, Pod Anti-Affinity, and Topology Spread Constraints to define the topology domain (node, zone, or region) where Pods should be co-located, separated, or evenly distributed. It is not used in Node Selector, Node Affinity, or Taints and Tolerations.
 
+---------------------------------------------------------------
+If we are using 3 Master node for the highly available k8s cluster then in that scenario this is how components of control plane works
+
+<img width="591" height="569" alt="Screenshot 2026-08-09 at 12 38 59 AM" src="https://github.com/user-attachments/assets/a148f15d-a237-4e78-9ccf-42db470618cb" />
+
+
