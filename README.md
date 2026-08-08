@@ -3423,3 +3423,44 @@ If we are using 3 Master node for the highly available k8s cluster then in that 
 <img width="591" height="569" alt="Screenshot 2026-08-09 at 12 38 59 AM" src="https://github.com/user-attachments/assets/a148f15d-a237-4e78-9ccf-42db470618cb" />
 
 
+How traffic is flowing in my application that's on running on-prem?
+
+                         INTERNET
+                            │
+                            ▼
+                  ┌─────────────────┐
+                  │  Imperva / WAF  │
+                  │ DDoS + Security │
+                  └────────┬────────┘
+                           │
+                           ▼
+                  ┌─────────────────┐
+                  │   API Gateway   │
+                  │ Auth / RateLimit│
+                  │ API Routing     │
+                  └────────┬────────┘
+                           │
+                           ▼
+             ┌──────────────────────────┐
+             │  External Load Balancer  │
+             └────────────┬─────────────┘
+                          │
+══════════════════════════╪════════════════════════════
+        KUBERNETES CLUSTER│
+                          ▼
+              ┌──────────────────────┐
+              │  Ingress Controller  │
+              │  Ingress-1           │
+              │  Ingress-2           │
+              │  Ingress-3           │
+              └──────────┬───────────┘
+                         │
+                         ▼
+                  ┌─────────────┐
+                  │ K8s Service │
+                  │  ClusterIP  │
+                  └──────┬──────┘
+                         │
+               ┌─────────┼─────────┐
+               ▼         ▼         ▼
+             Pod-A     Pod-B     Pod-C
