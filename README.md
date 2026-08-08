@@ -3439,4 +3439,58 @@ How traffic is flowing in my application that's running on AWS?
 
  <img width="1049" height="423" alt="Screenshot 2026-08-09 at 3 07 05 AM" src="https://github.com/user-attachments/assets/239c1799-ba32-44fc-a2ec-766992555488" />
 
+what's priority class in the k8s and how it's related to eviction policy in the k8s?
+
+PriorityClass is a cluster-scoped Kubernetes object that defines the scheduling importance of a Pod relative to other Pods. While Quality of Service (QoS) classes handle Pod eviction when a node runs out of resources, PriorityClasses dictate which Pods get scheduled first and which Pods can kick out (preempt) existing ones if a cluster is full.
+
+How PriorityClass Works
+
+Pod Scheduling Queue: When you submit a Pod, the Kubernetes scheduler places it in a queue. Pods with higher priority scores are automatically moved to the front of the line to be scheduled first.
+
+Preemption (Eviction): If a high-priority Pod cannot find a node with enough space, the scheduler will intentionally evict (preempt) lower-priority Pods from a node to free up resources for the high-priority Pod.
+⸻
+<img width="679" height="546" alt="Screenshot 2026-08-09 at 3 14 59 AM" src="https://github.com/user-attachments/assets/3746f429-125f-4ec0-8e13-4bde47a02c8a" />
+
+Which alerts should wake an engineer at 3 AM?
+
+
+
+
+* SLO is being violated significantly
+* Error-budget burn rate is dangerously high
+* Production availability is dropping
+* Critical API has sustained high 5xx/error rate
+* Severe latency affecting users
+* Complete service outage
+* Critical database/storage failure
+* Cluster capacity is exhausted and workloads are failing
+* Data loss/corruption risk
+* Security incident requiring immediate response
+
+
+What makes a good SLI?
+
+“A good SLI is user-centric, measurable, clearly defined, and directly represents service reliability.
+
+
+How do you reduce alert fatigue?
+
+“I reduce alert fatigue by making sure alerts are useful and actionable. I don’t alert on every CPU or memory spike. I focus on alerts that affect users or the SLO, remove duplicate and noisy alerts, and set the right severity. My goal is that when an engineer gets an alert, they know something important needs to be fixed.”
+
+How do you reduce MTTR?
+
+“I reduce MTTR by improving the entire incident lifecycle: detect problems quickly through SLO-based alerts, provide strong metrics/logs/traces for diagnosis, maintain actionable runbooks, automate common remediation, use safe deployment and rollback strategies, and regularly conduct incident and recovery exercises.”
+
+
+What happens when the Error Budget is exhausted?
+
+
+“An exhausted error budget is a signal that we’ve exceeded our acceptable level of unreliability. We would typically prioritize reliability work and may restrict risky feature releases according to our change-management policy. Once reliability improves and the budget begins recovering in the next SLO window, normal development can resume.”
+
+
+How would you implement image signing?
+
+
+* OPA/Gatekeeper with appropriate verification integrations or kyverno
+
 
