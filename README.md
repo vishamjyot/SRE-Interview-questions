@@ -3494,3 +3494,25 @@ How would you implement image signing?
 * OPA/Gatekeeper with appropriate verification integrations or kyverno
 
 
+13) Explain the differences between PersistentVolumes (PVs), PersistentVolumeClaims (PVCs), and StorageClasses.
+
+<img width="1190" height="610" alt="Screenshot 2026-08-10 at 12 41 24 AM" src="https://github.com/user-attachments/assets/3490c65e-2f59-4d16-9392-a7565ecea3f0" />
+<img width="1190" height="289" alt="Screenshot 2026-08-10 at 12 39 07 AM" src="https://github.com/user-attachments/assets/16f43685-392d-41f9-bb44-34a75b16c435" />
+
+Important production considerations
+
+I would also consider:
+
+* AccessModes: ReadWriteOnce, ReadOnlyMany, ReadWriteMany, depending on the storage backend.
+* ReclaimPolicy: Retain if I don’t want data automatically deleted; Delete when the lifecycle should follow the PVC.
+* WaitForFirstConsumer: useful when volume placement needs to account for the pod’s node/topology.
+* CSI drivers: preferred modern mechanism for cloud/block/file storage.
+* Snapshots/backups: use the storage platform’s snapshot/backup capabilities where appropriate.
+
+One-line memory trick:
+
+PVC asks for storage → StorageClass defines how to provision it → PV represents the provisioned storage → Pod consumes the PVC.
+
+StorageClass = How storage is created
+PV = The actual storage resource
+PVC = The application’s request for storage
