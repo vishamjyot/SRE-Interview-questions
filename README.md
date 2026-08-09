@@ -3516,3 +3516,8 @@ PVC asks for storage → StorageClass defines how to provision it → PV represe
 StorageClass = How storage is created
 PV = The actual storage resource
 PVC = The application’s request for storage
+
+Ansible one liner questions
+<img width="1190" height="621" alt="Screenshot 2026-08-10 at 2 26 40 AM" src="https://github.com/user-attachments/assets/4db60742-d0ea-491a-b9ed-a53fc514a97d" />
+<img width="1190" height="636" alt="Screenshot 2026-08-10 at 2 26 03 AM" src="https://github.com/user-attachments/assets/4aab8ba6-22f3-4a84-95a9-6b7920f1823c" />
+
