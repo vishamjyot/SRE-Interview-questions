@@ -160,17 +160,6 @@ Thread
 
 A thread is a lightweight execution unit within a process, sharing the process’s resources.
 
-⸻
-
-Q10. What are Error Budgets and what are they used for?
-
-Answer:
-
-An error budget is how much downtime a system can afford without upsetting consumers.
-
-It is also known as the margin of error permitted by the Service Level Objective (SLO).
-
-It encourages teams to minimize actual incidents.
 
 ⸻
 
