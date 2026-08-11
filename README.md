@@ -173,22 +173,6 @@ Activities that reduce toil include:
 * Creating internal automation
 * Enhancing the service so it does not require maintenance intervention
 
-What is Toil?
-
-Toil is:
-
-* Repetitive
-* Manual
-* Automatable
-* Tactical (interrupt-driven)
-* Non-strategic work
-
-Examples:
-
-* Constant alert acknowledgment
-* Manual server restarts
-* Repetitive data extraction
-
 ⸻
 
 Q12. List some Linux Signals.
@@ -511,19 +495,6 @@ Answer:
 * AWS Secrets Manager
 * Azure Key Vault
 
-⸻
-
-Q39. Difference between Active-Active and Active-Passive Failover?
-
-Answer:
-
-Active-Active
-
-Multiple systems actively serve traffic.
-
-Active-Passive
-
-One active system serves traffic while a standby system takes over during failure.
 
 ⸻
 
@@ -555,13 +526,6 @@ Answer:
 
 A service registry is a dynamic database of service instances and their locations used for service discovery.
 
-⸻
-
-Q43. What is the purpose of an Alerting System?
-
-Answer:
-
-An alerting system notifies engineers of issues in real time so incidents can be addressed quickly.
 
 ⸻
 
