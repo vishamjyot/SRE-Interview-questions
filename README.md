@@ -3475,3 +3475,6 @@ Ansible one liner questions
 <img width="1190" height="636" alt="Screenshot 2026-08-10 at 2 26 03 AM" src="https://github.com/user-attachments/assets/4aab8ba6-22f3-4a84-95a9-6b7920f1823c" />
 
 <img width="1190" height="640" alt="Screenshot 2026-08-11 at 2 53 52 AM" src="https://github.com/user-attachments/assets/086d2569-57bb-4045-b87c-588483660c17" />
+
+<img width="1190" height="640" alt="Screenshot 2026-08-11 at 2 54 14 AM" src="https://github.com/user-attachments/assets/c881a030-3f28-4b80-8e4f-5ddc67d52ab0" />
+
