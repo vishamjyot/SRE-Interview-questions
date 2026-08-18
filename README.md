@@ -3268,7 +3268,11 @@ Hard rule (requiredDuringSchedulingIgnoredDuringExecution): If the condition is 
 
 Soft rule (preferredDuringSchedulingIgnoredDuringExecution): If the preferred condition is not satisfied, the Pod can still be scheduled on another suitable node; Kubernetes simply tries to honor the preference when possible.
 
+The main difference is that taints don’t have “hard vs soft” rules in exactly the same way as affinity. Instead, taints use effects:
 
+* NoSchedule → Hard: Pod will not be scheduled on the tainted node unless it has a matching toleration.
+* PreferNoSchedule → Soft: Kubernetes tries to avoid the tainted node, but may schedule the Pod there if necessary.
+* NoExecute → Hard at execution time: Pod won’t be scheduled there, and existing Pods without the toleration can be evicted.
 
 topologySpreadConstraints:
 - maxSkew: 1
