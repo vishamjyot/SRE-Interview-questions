@@ -3261,6 +3261,14 @@ Answer:
 
 <img width="1077" height="393" alt="Screenshot 2026-06-17 at 12 46 02 AM" src="https://github.com/user-attachments/assets/9a2cab6a-5e9b-4688-84b9-ee7510302c8d" />
 
+required = “MUST”
+preferred = “TRY”
+
+Hard rule (requiredDuringSchedulingIgnoredDuringExecution): If the condition is not satisfied by any node, the Pod will remain in Pending state because Kubernetes cannot find a valid node.
+
+Soft rule (preferredDuringSchedulingIgnoredDuringExecution): If the preferred condition is not satisfied, the Pod can still be scheduled on another suitable node; Kubernetes simply tries to honor the preference when possible.
+
+
 
 topologySpreadConstraints:
 - maxSkew: 1
